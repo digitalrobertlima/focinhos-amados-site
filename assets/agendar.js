@@ -1,84 +1,163 @@
-/* Wizard de agendamento (multi-pet) — minimal, seguro e extensível */
+/* Wizard de Agendamento (multi-pet) — focado em UX e segurança */
 (function(){
   "use strict";
-  const el = document.getElementById('wizard');
-  if(!el){ return; }
+  const root = document.getElementById('wizard'); if(!root) return;
 
-  // State
-  let pets=[]; // {id,nome,porte,servico,extras:Set}
-  let autoId=1;
+  // CONFIG (EDIT ZONE)
+  const WHATS = "5531982339672";
+  const PRECOS = {
+    base:{ banho:{P:45,M:60,G:80,GG:100}, banho_tosa:{P:90,M:110,G:130,GG:160} },
+    extras:{ hidratacao:20, perfume:10, laco:5, ouvidos:10, dental:15, tosa_higienica:25 },
+    descontos:{ multipet:0.05 } // 5% sobre soma dos bases (2+ pets)
+  };
 
-  // UI
+  // STATE
+  let pets = []; // {id,nome,porte,servico,extras:Set}
+  let autoId = 1;
+  let dataHora = "";
+  let nomeTutor = "";
+
   render();
 
   function render(){
-    el.innerHTML = "";
-    const card = document.createElement('div');
-    card.className = "card";
+    root.innerHTML = "";
+    // Cabeçalho do wizard
+    const head = el('div', {class:'wrow'}, [
+      el('div', {style:'flex:1'}, [el('label',{},['Seu nome']), input(nomeTutor, v=>{nomeTutor=v;})]),
+      el('div', {style:'flex:1'}, [el('label',{},['Data e horário desejados']), dateTime(dataHora, v=>{dataHora=v;})]),
+    ]);
 
-    const list = document.createElement('div');
-    pets.forEach((p,i)=> list.appendChild(petRow(p, i)));
+    const list = el('div',{}, pets.length? pets.map((p,i)=> petCard(p,i)) : [emptyState()]);
 
-    const actions = document.createElement('div'); actions.className="row";
-    const addBtn = button("➕ Adicionar pet", "btn", ()=>{ addPet(); });
-    const waBtn  = button("💬 Enviar no WhatsApp", "btn btn-primary", enviarWhatsApp);
-    actions.appendChild(addBtn); actions.appendChild(waBtn);
+    const actions = el('div', {class:'wizard-actions'}, [
+      btn('➕ Adicionar pet','btn', ()=> addPet()),
+      btn('💬 Enviar no WhatsApp','btn btn-primary', enviarWhatsApp)
+    ]);
 
-    card.appendChild(list);
-    card.appendChild(actions);
-    el.appendChild(card);
+    root.appendChild(head);
+    root.appendChild(list);
+    root.appendChild(actions);
 
-    if(pets.length===0){ addPet(); }
+    if(pets.length===0) addPet(); // garante 1
   }
-  function petRow(pet, idx){
-    const wrap = document.createElement('div');
-    wrap.className = "card"; // sub-card
 
-    const title = document.createElement('div');
-    title.style.display="flex"; title.style.justifyContent="space-between"; title.style.alignItems="center"; title.style.marginBottom=".5rem";
-    const strong = document.createElement('strong'); strong.textContent = `Pet ${idx+1}`;
-    const del = button("Remover", "btn btn-danger", ()=>{ if(confirm('Remover este pet?')){ pets = pets.filter(x=>x.id!==pet.id); render(); } });
-    title.appendChild(strong); title.appendChild(del);
+  function emptyState(){
+    const d = el('div',{class:'subcard'},[
+      el('strong',{},['Comece adicionando seu primeiro pet']),
+      el('p',{class:'small'},['Você poderá escolher serviço e extras por pet.'])
+    ]);
+    return d;
+  }
 
-    const name = labeled("Nome do pet", input(pet.nome, v=>{pet.nome=v;}));
-    const porte = labeled("Porte", select(["P","M","G","GG"], pet.porte, v=>{pet.porte=v;}));
-    const serv  = labeled("Serviço", select([{v:"banho",t:"Banho"},{v:"banho_tosa",t:"Banho + Tosa"}], pet.servico, v=>{pet.servico=v;}));
+  function petCard(pet, idx){
+    const wrap = el('div',{class:'subcard'});
+    const title = el('div',{class:'wrow'},[
+      el('strong',{},[`Pet ${idx+1}`]),
+      btn('Remover','btn btn-danger', ()=>{
+        if(pets.length<=1){ alert('Mantenha ao menos 1 pet.'); return; }
+        if(confirm('Remover este pet?')){ pets = pets.filter(x=>x.id!==pet.id); render(); }
+      })
+    ]);
 
-    const row = document.createElement('div'); row.className="row";
-    row.appendChild(name); row.appendChild(porte); row.appendChild(serv);
+    const row1 = el('div',{class:'wrow'},[
+      labeled('Nome do pet', input(pet.nome, v=>{pet.nome=v;})),
+      labeled('Porte', select(['P','M','G','GG'], pet.porte, v=>{pet.porte=v;})),
+      labeled('Serviço', select([{v:'banho',t:'Banho'},{v:'banho_tosa',t:'Banho + Tosa'}], pet.servico, v=>{pet.servico=v;}))
+    ]);
+
+    const pills = [
+      ['hidratacao','Hidratação'],['perfume','Perfume'],['laco','Laço'],
+      ['ouvidos','Ouvidos'],['dental','Dental'],['tosa_higienica','Tosa hig.']
+    ];
+    const extras = el('div',{class:'wrow'},[
+      el('label',{},['Extras (opcional)']),
+      el('div',{class:'row'}, pills.map(([k,t])=>{
+        const b = btn(t, 'btn', ()=>{
+          if(pet.extras.has(k)){ pet.extras.delete(k); b.classList.remove('btn-primary'); }
+          else { pet.extras.add(k); b.classList.add('btn-primary'); }
+        });
+        if(pet.extras.has(k)) b.classList.add('btn-primary');
+        return b;
+      }))
+    ]);
 
     wrap.appendChild(title);
-    wrap.appendChild(row);
+    wrap.appendChild(row1);
+    wrap.appendChild(extras);
     return wrap;
   }
-  function labeled(label, field){
-    const d=document.createElement('div'); d.style.flex="1 1 240px";
-    const l=document.createElement('label'); l.textContent=label; d.appendChild(l); d.appendChild(field); return d;
+
+  function addPet(){
+    pets.push({id:autoId++, nome:"", porte:"P", servico:"banho", extras:new Set()});
+    render();
   }
-  function input(val, oninput){
-    const i=document.createElement('input'); i.value=val||''; i.addEventListener('input', ()=> oninput(i.value.trim())); return i;
-  }
-  function select(options, val, onchange){
-    const s=document.createElement('select');
-    (options||[]).forEach(opt=>{
-      const o=document.createElement('option');
-      if(typeof opt==='string'){ o.value=opt; o.textContent=opt; }
-      else{ o.value=opt.v; o.textContent=opt.t; }
-      if(o.value===val) o.selected=true;
-      s.appendChild(o);
-    });
-    s.addEventListener('change', ()=> onchange(s.value));
-    return s;
-  }
-  function button(text, cls, onclick){ const b=document.createElement('button'); b.type="button"; b.className=cls; b.textContent=text; b.addEventListener('click', onclick); return b; }
-  function addPet(){ pets.push({id:autoId++, nome:"", porte:"P", servico:"banho"}); render(); }
 
   function enviarWhatsApp(){
-    if(pets.some(p=>!p.nome)){ alert('Informe o nome de todos os pets.'); return; }
-    const linhas = pets.map((p,i)=>`• Pet ${i+1}: ${p.nome} — ${p.servico==='banho'?'Banho':'Banho + Tosa'} — Porte: ${p.porte}`);
-    const msg = `Olá! Quero agendar serviços para meus pets:\n${linhas.join('\n')}\nObrigado(a)!`;
-    const url = `https://wa.me/5531982339672?text=${encodeURIComponent(msg)}`;
+    if(!nomeTutor.trim()){ alert('Informe seu nome.'); return; }
+    if(pets.some(p=>!p.nome.trim())){ alert('Informe o nome de todos os pets.'); return; }
+    const val = compute();
+    const linhas = pets.map((p,i)=>{
+      const e = Array.from(p.extras||[]);
+      const extrasTotal = val.porPet[i].extrasDoPet;
+      return `• Pet ${i+1}: ${p.nome} — ${p.servico==='banho'?'Banho':'Banho + Tosa'} — Porte: ${p.porte}${e.length?`\n  ↳ Extras: ${e.join(', ')} (R$ ${money(extrasTotal)})`:''}`;
+    });
+    const msg = `Olá! Sou ${nomeTutor} e gostaria de agendar:
+${linhas.join('\n')}
+${dataHora?`• Quando: ${fmtDataHora(dataHora)}\n`:''}
+Estimativa total: R$ ${money(val.total)}${val.descMultipet>0?` (inclui desconto multi-pet de R$ ${money(val.descMultipet)})`:''}
+Obrigado(a)!`;
+    const url = `https://wa.me/${WHATS}?text=${encodeURIComponent(msg)}`;
     window.open(url,'_blank','noopener,noreferrer');
+  }
+
+  function compute(){
+    let baseSum=0, extrasSum=0;
+    const porPet = pets.map(p=>{
+      const base = (PRECOS.base[p.servico]||{})[p.porte]||0;
+      let extras=0; Array.from(p.extras||[]).forEach(k=> extras += (PRECOS.extras[k]||0));
+      const hasVIP = ['hidratacao','perfume','laco'].every(k=> (p.extras||new Set()).has(k));
+      const descVIP = hasVIP? extras*0.10 : 0;
+      const extrasDoPet = extras - descVIP;
+      baseSum += base; extrasSum += extrasDoPet;
+      return {base, extrasDoPet};
+    });
+    let descMultipet=0;
+    if(pets.length>=2) descMultipet = baseSum * (PRECOS.descontos.multipet||0);
+    const total = Math.max(0, baseSum + extrasSum - descMultipet);
+    return {porPet, baseSum, extrasSum, descMultipet, total};
+  }
+
+  // Helpers UI
+  function el(tag, attrs={}, children=[]){
+    const d = document.createElement(tag);
+    Object.entries(attrs).forEach(([k,v])=> d.setAttribute(k,v));
+    (Array.isArray(children)?children:[children]).forEach(ch=>{
+      if(ch==null) return;
+      if(typeof ch==='string') d.appendChild(document.createTextNode(ch));
+      else d.appendChild(ch);
+    });
+    return d;
+  }
+  function labeled(text, field){ const w=el('div',{},[]); const l=el('label',{},[text]); w.appendChild(l); w.appendChild(field); return w; }
+  function input(val, oninput){ const i=el('input'); i.value=val||''; i.addEventListener('input',()=>oninput(i.value)); return i; }
+  function dateTime(val, oninput){ const i=el('input'); i.type='datetime-local'; i.value=val||''; i.addEventListener('input',()=>oninput(i.value)); return i; }
+  function select(options, val, onchange){
+    const s=el('select');
+    options.forEach(opt=>{
+      const o=el('option'); if(typeof opt==='string'){ o.value=opt;o.textContent=opt; } else { o.value=opt.v; o.textContent=opt.t; }
+      if(o.value===val) o.selected=true; s.appendChild(o);
+    });
+    s.addEventListener('change',()=>onchange(s.value));
+    return s;
+  }
+  function btn(text, cls, onclick){ const b=el('button',{type:'button',class:cls},[text]); b.addEventListener('click',onclick); return b; }
+
+  // Helpers utilitários
+  function money(n){ return (Number(n)||0).toFixed(2).replace('.',','); }
+  function fmtDataHora(v){
+    if(!v) return '';
+    try{ const dt=new Date(v), p=n=>String(n).padStart(2,'0'); return `${p(dt.getDate())}/${p(dt.getMonth()+1)}/${dt.getFullYear()} às ${p(dt.getHours())}:${p(dt.getMinutes())}`; }
+    catch{ return v; }
   }
 })();
     

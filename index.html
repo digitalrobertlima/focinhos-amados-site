@@ -3,47 +3,110 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Focinhos Amados • Pet Shop</title>
+<title>Focinhos Amados • Pet Shop em Contagem/MG</title>
+<meta name="description" content="Banho e tosa com carinho, delivery de ração e Táxi Dog. Fale no WhatsApp e agende agora.">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./assets/icons.svg" type="image/svg+xml">
 <link rel="stylesheet" href="./assets/styles.css">
+<meta property="og:title" content="Focinhos Amados • Pet Shop">
+<meta property="og:description" content="Banho & tosa, delivery e Táxi Dog. Atendimento rápido no WhatsApp.">
+<meta property="og:type" content="website">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests">
 </head>
 <body>
-<header class="site-header card" role="banner">
-  <div class="brand">
-    <div class="logo" aria-hidden="true"></div>
-    <div>
-      <h1>Focinhos Amados</h1>
-      <small>Cuidado e carinho para o seu pet 🐶🐱</small>
+<header class="topbar">
+  <div class="container">
+    <div class="brand">
+      <a class="brand-link" href="./index.html" aria-label="Início">
+        <div class="logo" aria-hidden="true"></div>
+      </a>
+      <div>
+        <h1>Focinhos Amados</h1>
+        <small>Contagem/MG • Amor e cuidado para o seu pet</small>
+      </div>
     </div>
+    <nav class="mainnav" aria-label="Navegação principal">
+      <a href="./pages/agendar.html">Agendar</a>
+      <a href="./pages/delivery.html">Delivery</a>
+      <a href="./pages/taxi.html">Táxi Dog</a>
+      <a href="./pages/sobre.html">Sobre</a>
+    </nav>
   </div>
 </header>
 
-<main class="container">
-  <section class="card">
-    <h2>Escolha uma ação</h2>
-    <div class="row">
-      <a class="btn btn-primary" href="./pages/agendar.html">🛁 Agendar banho/tosa</a>
-      <a class="btn btn-ghost" href="./pages/delivery.html">📦 Delivery (ração/itens)</a>
-      <a class="btn btn-ghost" href="./pages/taxi.html">🚕 Táxi Dog</a>
-      <a class="btn btn-ghost" href="./pages/sobre.html">ℹ️ Sobre & Contato</a>
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <h2>Banho & tosa com carinho. <span class="accent">Agende no WhatsApp.</span></h2>
+        <p>Equipe atenciosa, produtos de qualidade e amor em cada cuidado. Entregamos ração e buscamos seu pet com Táxi Dog.</p>
+        <div class="row">
+          <a class="btn btn-primary" rel="noopener" target="_blank" href="https://wa.me/5531982339672">💬 Falar no WhatsApp</a>
+          <a class="btn btn-ghost" href="./pages/agendar.html">🛁 Agendar agora</a>
+        </div>
+        <div class="trust">
+          <span class="tag">Profissionais certificados</span>
+          <span class="tag">Mais de 1.000 pets felizes</span>
+          <span class="tag">Higiene e segurança</span>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="pup"></div>
+      </div>
     </div>
   </section>
 
-  <section class="card">
-    <h2>Por que escolher a gente?</h2>
-    <ul>
-      <li>Atendimento humano e rápido via WhatsApp</li>
-      <li>Banho & tosa com profissionais experientes</li>
-      <li>Delivery programado com assinatura opcional</li>
-      <li>Táxi Dog com localização precisa (GPS)</li>
-    </ul>
+  <!-- SERVIÇOS -->
+  <section class="container">
+    <h3 class="section-title">Nossos serviços</h3>
+    <div class="cards">
+      <article class="card service">
+        <h4>Banho</h4>
+        <p>Limpeza completa, secagem segura e perfume suave.</p>
+        <a class="btn btn-ghost" href="./pages/agendar.html">Agendar</a>
+      </article>
+      <article class="card service">
+        <h4>Banho + Tosa</h4>
+        <p>Corte higiênico/estético conforme a raça e orientação do tutor.</p>
+        <a class="btn btn-ghost" href="./pages/agendar.html">Agendar</a>
+      </article>
+      <article class="card service">
+        <h4>Delivery</h4>
+        <p>Ração, areia e petiscos com entrega programada e assinatura.</p>
+        <a class="btn btn-ghost" href="./pages/delivery.html">Pedir</a>
+      </article>
+      <article class="card service">
+        <h4>Táxi Dog</h4>
+        <p>Busca e leva seu pet com segurança. Use GPS para precisão.</p>
+        <a class="btn btn-ghost" href="./pages/taxi.html">Solicitar</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- GALERIA SIMPLES -->
+  <section class="container">
+    <h3 class="section-title">Momentos fofos</h3>
+    <div class="gallery">
+      <div class="ph"></div><div class="ph"></div><div class="ph"></div><div class="ph"></div><div class="ph"></div><div class="ph"></div>
+    </div>
+  </section>
+
+  <!-- DEPOIMENTOS -->
+  <section class="container">
+    <h3 class="section-title">O que dizem</h3>
+    <div class="testimonials">
+      <blockquote class="card"><p>“Cuidam do meu Thor como se fosse deles. Recomendo muito!”</p><footer>— Ana P.</footer></blockquote>
+      <blockquote class="card"><p>“Banho cheiroso e tosa perfeita. Atendimento nota 10.”</p><footer>— Bruno C.</footer></blockquote>
+      <blockquote class="card"><p>“Entrega da ração sempre pontual. Facilitou minha vida.”</p><footer>— Karina S.</footer></blockquote>
+    </div>
   </section>
 </main>
 
-<footer class="container">
-  <p class="small">© <span id="ano"></span> Focinhos Amados. Feito com ❤️ e cuidado.</p>
+<footer class="site-footer">
+  <div class="container">
+    <p>© <span id="ano"></span> Focinhos Amados • Contagem/MG</p>
+  </div>
 </footer>
 
 <script src="./assets/app.js" defer></script>

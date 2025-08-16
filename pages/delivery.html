@@ -5,24 +5,57 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Delivery • Focinhos Amados</title>
 <link rel="stylesheet" href="../assets/styles.css">
+<meta name="description" content="Peça ração, areia e petiscos. Assinatura opcional com entrega programada.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests">
 </head>
 <body>
-<header class="site-header card"><a class="btn" href="../index.html">⬅️ Voltar</a> <strong style="margin-left:.5rem">Delivery</strong></header>
+<header class="topbar">
+  <div class="container">
+    <div class="brand">
+      <a class="brand-link" href="../index.html" aria-label="Início"><div class="logo" aria-hidden="true"></div></a>
+      <div><h1>Delivery</h1><small>Ração, areia e petiscos com comodidade</small></div>
+    </div>
+    <nav class="mainnav">
+      <a href="./agendar.html">Agendar</a>
+      <a aria-current="page" href="./delivery.html">Delivery</a>
+      <a href="./taxi.html">Táxi Dog</a>
+      <a href="./sobre.html">Sobre</a>
+    </nav>
+  </div>
+</header>
+
 <main class="container">
   <section class="card">
     <h2>Faça seu pedido</h2>
     <form id="formDelivery" novalidate>
-      <label>Produto<input id="produto" required placeholder="Ex.: Ração Premier 10kg"></label>
+      <label>Produto
+        <input id="produto" placeholder="Ex.: Ração Premier 10kg" required>
+      </label>
       <div class="row">
-        <label>Qtd.<input id="quantidade" type="number" min="1" value="1"></label>
-        <label>Assinatura<select id="assinatura"><option value="nao">Não</option><option value="30">30 dias</option><option value="45">45 dias</option><option value="60">60 dias</option></select></label>
+        <label style="flex:1 1 120px">Qtd.
+          <input id="quantidade" type="number" min="1" value="1">
+        </label>
+        <label style="flex:1 1 200px">Assinatura
+          <select id="assinatura">
+            <option value="nao">Não</option>
+            <option value="30">30 dias</option>
+            <option value="45">45 dias</option>
+            <option value="60">60 dias</option>
+          </select>
+        </label>
       </div>
-      <div class="row"><button class="btn btn-primary" type="submit">💬 Enviar no WhatsApp</button></div>
+      <div class="row">
+        <button class="btn btn-primary" type="submit">💬 Enviar no WhatsApp</button>
+      </div>
     </form>
+    <p class="small">Assinaturas possuem preços especiais e lembretes de reposição.</p>
   </section>
 </main>
-<footer class="container"><p class="small">© <span id="ano"></span> Focinhos Amados</p></footer>
+
+<footer class="site-footer">
+  <div class="container"><p>© <span id="ano"></span> Focinhos Amados</p></div>
+</footer>
+
 <script src="../assets/app.js" defer></script>
 </body>
 </html>

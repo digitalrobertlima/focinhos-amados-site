@@ -5,18 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sobre & Contato • Focinhos Amados</title>
 <link rel="stylesheet" href="../assets/styles.css">
+<meta name="description" content="Conheça a equipe, valores e canais de contato do Focinhos Amados.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests">
 </head>
 <body>
-<header class="site-header card"><a class="btn" href="../index.html">⬅️ Voltar</a> <strong style="margin-left:.5rem">Sobre & Contato</strong></header>
+<header class="topbar">
+  <div class="container">
+    <div class="brand">
+      <a class="brand-link" href="../index.html" aria-label="Início"><div class="logo" aria-hidden="true"></div></a>
+      <div><h1>Sobre & Contato</h1><small>Conheça a gente e fale conosco</small></div>
+    </div>
+    <nav class="mainnav">
+      <a href="./agendar.html">Agendar</a>
+      <a href="./delivery.html">Delivery</a>
+      <a href="./taxi.html">Táxi Dog</a>
+      <a aria-current="page" href="./sobre.html">Sobre</a>
+    </nav>
+  </div>
+</header>
+
 <main class="container">
   <section class="card">
     <h2>Quem somos</h2>
-    <p>Pet Shop Focinhos Amados — Contagem/MG. Atendimento com carinho e qualidade.</p>
-    <div class="row"><a class="btn btn-primary" rel="noopener" target="_blank" href="https://wa.me/5531982339672">💬 Falar no WhatsApp</a></div>
+    <p>Somos apaixonados por pets! No Focinhos Amados, priorizamos bem-estar, higiene e carinho. Atendemos em Contagem/MG com estrutura segura e equipe qualificada.</p>
+    <div class="grid">
+      <div class="card">
+        <h3>Horários</h3>
+        <ul>
+          <li>Seg a Sex: 8h às 18h</li>
+          <li>Sáb: 8h às 13h</li>
+          <li>Dom/Feriados: fechado</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Contato</h3>
+        <p>WhatsApp: <a rel="noopener" target="_blank" href="https://wa.me/5531982339672">+55 31 98233-9672</a></p>
+        <p>Endereço: Contagem/MG — <a rel="noopener" target="_blank" href="https://maps.google.com/?q=Contagem%20MG">ver mapa</a></p>
+      </div>
+    </div>
   </section>
 </main>
-<footer class="container"><p class="small">© <span id="ano"></span> Focinhos Amados</p></footer>
+
+<footer class="site-footer">
+  <div class="container"><p>© <span id="ano"></span> Focinhos Amados</p></div>
+</footer>
+
 <script src="../assets/app.js" defer></script>
 </body>
 </html>

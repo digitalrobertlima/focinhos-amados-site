@@ -5,18 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Agendar • Focinhos Amados</title>
 <link rel="stylesheet" href="../assets/styles.css">
+<meta name="description" content="Agende banho e tosa para seus pets. Fluxo simples, multi-pet e WhatsApp.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests">
 </head>
 <body>
-<header class="site-header card"><a class="btn" href="../index.html">⬅️ Voltar</a> <strong style="margin-left:.5rem">Agendar</strong></header>
+<header class="topbar">
+  <div class="container">
+    <div class="brand">
+      <a class="brand-link" href="../index.html" aria-label="Início"><div class="logo" aria-hidden="true"></div></a>
+      <div><h1>Agendar</h1><small>Wizard simples, multi-pet, com WhatsApp</small></div>
+    </div>
+    <nav class="mainnav" aria-label="Navegação principal">
+      <a aria-current="page" href="./agendar.html">Agendar</a>
+      <a href="./delivery.html">Delivery</a>
+      <a href="./taxi.html">Táxi Dog</a>
+      <a href="./sobre.html">Sobre</a>
+    </nav>
+  </div>
+</header>
+
 <main class="container">
   <section class="card">
-    <h2>Agendamento (multi-pet)</h2>
     <div id="wizard"></div>
-    <div class="alert small">Atenção: “Remover pet” usa botão vermelho (danger) com confirmação.</div>
+    <p class="small">Botões “Remover” são em <strong>vermelho</strong> e pedem confirmação.</p>
   </section>
 </main>
-<footer class="container"><p class="small">© <span id="ano"></span> Focinhos Amados</p></footer>
+
+<footer class="site-footer">
+  <div class="container"><p>© <span id="ano"></span> Focinhos Amados</p></div>
+</footer>
+
 <script src="../assets/agendar.js" defer></script>
 </body>
 </html>
